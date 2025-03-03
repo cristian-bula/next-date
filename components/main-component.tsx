@@ -22,8 +22,6 @@ export default function MainComponet({
   // Valores por defecto en caso de que no vengan datos del servicio
   upcomingDate,
   pastDates = [],
-  onAddDate,
-  onManageDates,
 }: CountdownProps) {
   // Valores predeterminados para textos
   const finalTexts = {
@@ -105,14 +103,13 @@ export default function MainComponet({
     );
   };
 
-  // Handlers para botones
-  const handleAddDate = () => {
-    if (onAddDate) onAddDate();
-  };
+  // const handleAddDate = () => {
+  //   if (onAddDate) onAddDate();
+  // };
 
-  const handleManageDates = () => {
-    if (onManageDates) onManageDates();
-  };
+  // const handleManageDates = () => {
+  //   if (onManageDates) onManageDates();
+  // };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-olive-100 to-olive-200 flex flex-col items-center justify-start p-4">
