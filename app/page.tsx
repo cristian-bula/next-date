@@ -1,7 +1,7 @@
 // src/app/page.tsx
 import { Suspense } from "react";
-import MainComponet from "./components/main-component";
 import { getPastDates, getUpcomingDate } from "@/lib/actions";
+import MainComponet from "@/components/main-component";
 
 // Esto es un componente de servidor que carga los datos iniciales
 export default async function DatesPage() {
