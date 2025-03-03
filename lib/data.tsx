@@ -1,4 +1,3 @@
-"use server";
 
 import { DateEvent } from "@/types/date";
 

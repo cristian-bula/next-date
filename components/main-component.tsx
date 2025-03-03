@@ -6,24 +6,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { DateEvent } from "@/types/date";
 
-// Definir tipos para nuestros datos
-
 type CountdownProps = {
-  // Datos que vendrán del servicio
   upcomingDate?: DateEvent;
   pastDates?: DateEvent[];
-  // Funciones para manejar eventos (opcional)
   onAddDate?: () => void;
   onManageDates?: () => void;
-  // Textos personalizables
 };
 
 export default function MainComponet({
-  // Valores por defecto en caso de que no vengan datos del servicio
   upcomingDate,
   pastDates = [],
 }: CountdownProps) {
-  // Valores predeterminados para textos
   const finalTexts = {
     title: "Próxima Cita",
     subtitle: "Contando cada segundo hasta volver a verte",
@@ -88,7 +81,6 @@ export default function MainComponet({
     return () => clearInterval(timer);
   }, [nextDate, upcomingDate]);
 
-  // Navegar por fechas pasadas
   const handlePrevDate = () => {
     if (pastDates.length === 0) return;
     setCurrentPastDateIndex((prevIndex) =>

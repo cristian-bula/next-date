@@ -1,11 +1,8 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-// Esta sería la ruta para obtener la próxima cita
 export async function GET() {
   try {
-    // Aquí conectarías con tu base de datos
-    // Por ejemplo con Prisma:
     const upcomingDate = await prisma.dates.findFirst({
       where: {
         date: { gt: new Date() },
