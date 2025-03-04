@@ -7,7 +7,7 @@ export async function GET() {
       where: {
         date: { gt: new Date() },
       },
-      orderBy: { date: "asc" },
+      orderBy: { date: "desc" },
     });
 
     return NextResponse.json(upcomingDate);
