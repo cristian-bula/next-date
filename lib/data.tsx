@@ -4,7 +4,11 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/";
 
 export const getUpcomingDate = async (): Promise<DateEvent | null> => {
   try {
-    const res = await fetch(`${API_URL}dates/upcoming`);
+    const res = await fetch(`${API_URL}dates/upcoming`, {
+      next: {
+        revalidate: 300,
+      },
+    });
     if (!res.ok) {
       throw new Error(`Error: ${res.status}`);
     }
@@ -23,7 +27,11 @@ export const getUpcomingDate = async (): Promise<DateEvent | null> => {
 
 export const getPastDates = async (): Promise<DateEvent[]> => {
   try {
-    const res = await fetch(`${API_URL}dates/past`);
+    const res = await fetch(`${API_URL}dates/past`, {
+      next: {
+        revalidate: 300,
+      },
+    });
 
     if (!res.ok) {
       throw new Error(`Error: ${res.status}`);
