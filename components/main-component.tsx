@@ -114,12 +114,16 @@ export default function MainComponet({
         {/* Foto y Contador */}
         <Card className="bg-white/80 backdrop-blur-sm border-olive-300 shadow-lg mb-8">
           <CardContent className="p-6">
-            <div className="relative w-full aspect-[3/3] mb-6 overflow-hidden rounded-lg border-4 border-olive-300 shadow-md">
-              <img
-                src={nextDateInfo.photo}
-                alt="Foto de nuestra próxima cita"
-                className="object-cover w-full h-full"
-              />
+            <div className="relative w-full aspect-[3/3] md:aspect-[4/3] mb-6 overflow-hidden rounded-lg border-4 border-olive-300 shadow-md">
+              <PhotoProvider maskOpacity={0.1} bannerVisible={false}>
+                <PhotoView src={nextDateInfo.photo}>
+                  <img
+                    src={nextDateInfo.photo}
+                    alt="Foto de nuestra próxima cita"
+                    className="object-cover w-full h-full cursor-pointer"
+                  />
+                </PhotoView>
+              </PhotoProvider>
             </div>
             <CardTitle className="text-olive-700 flex items-center gap-2 mb-4">
               <Clock className="h-5 w-5 text-olive-600" />
@@ -211,7 +215,7 @@ export default function MainComponet({
                           pastDates[currentPastDateIndex]?.description ||
                           "Cita pasada"
                         }
-                        className="w-full h-48 md:h-96 object-cover rounded-lg mb-4"
+                        className="w-full h-48 md:h-96 object-cover rounded-lg mb-4 cursor-pointer"
                       />
                     </PhotoView>
                     {/* {pastDates[currentPastDateIndex]?.photos
