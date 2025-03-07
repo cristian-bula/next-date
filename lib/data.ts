@@ -1,36 +1,16 @@
 import { DateEvent } from "@/types/date";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/";
+const CLOUD_NAME = process.env.CLAUDINARY_NAME || "";
+const UPLOAD_PRESET = "VERCEL";
 
-export const getUpcomingDate = async (): Promise<DateEvent | null> => {
+export const getAllDates = async (): Promise<DateEvent[]> => {
   try {
-    const res = await fetch(`${API_URL}dates/upcoming`, {
+    const res = await fetch(`${API_URL}dates`, {
       next: {
         revalidate: 300,
       },
-    });
-    if (!res.ok) {
-      throw new Error(`Error: ${res.status}`);
-    }
-
-    const data = await res.json();
-
-    return {
-      ...data,
-      date: new Date(data.date),
-    };
-  } catch (error) {
-    console.error("Error al obtener la próxima cita", error);
-    return null;
-  }
-};
-
-export const getPastDates = async (): Promise<DateEvent[]> => {
-  try {
-    const res = await fetch(`${API_URL}dates/past`, {
-      next: {
-        revalidate: 300,
-      },
+      method: "GET",
     });
 
     if (!res.ok) {
@@ -41,10 +21,10 @@ export const getPastDates = async (): Promise<DateEvent[]> => {
 
     return data.map((item: any) => ({
       ...item,
-      date: new Date(item.date),
+      date: item.date ? new Date(item.date) : null,
     }));
   } catch (error) {
-    console.error("Error al obtener citas pasadas", error);
+    console.error("Error al obtener citas", error);
     return [];
   }
 };
@@ -65,10 +45,7 @@ export const addDate = async (
 
     const data = await res.json();
 
-    return {
-      ...data,
-      date: new Date(data.date),
-    };
+    return data;
   } catch (error) {
     console.error("Error al añadir nueva cita", error);
     return null;
@@ -113,3 +90,42 @@ export const deleteDate = async (dateId: string): Promise<boolean> => {
     return false;
   }
 };
+
+export async function uploadImage(file: File): Promise<string | null> {
+  const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", UPLOAD_PRESET);
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error en la subida: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.secure_url;
+  } catch (error) {
+    console.error("Error subiendo la imagen:", error);
+    return null;
+  }
+}
+
+export async function deleteImage(imageId: string) {
+  try {
+    const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+    const response = await fetch(url, {
+      method: "DELETE",
+      body: `public_id=${imageId}`,
+    });
+    return true;
+  } catch (error) {
+    console.error("Error deleting image:", error);
+    return false;
+  }
+}

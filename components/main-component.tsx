@@ -5,17 +5,21 @@ import { Heart, Clock, ChevronLeft, ChevronRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { DateEvent } from "@/types/date";
+import { AddDateModal } from "./add-date";
+import { ManageDatesModal } from "./manage-dates";
+import { PhotoProvider, PhotoView } from "react-photo-view";
+import "react-photo-view/dist/react-photo-view.css";
 
 type CountdownProps = {
-  upcomingDate?: DateEvent;
-  pastDates?: DateEvent[];
-  onAddDate?: () => void;
-  onManageDates?: () => void;
+  upcomingDate: DateEvent;
+  pastDates: DateEvent[];
+  allDates: DateEvent[];
 };
 
 export default function MainComponet({
   upcomingDate,
   pastDates = [],
+  allDates = [],
 }: CountdownProps) {
   const finalTexts = {
     title: "Próxima Cita",
@@ -95,14 +99,6 @@ export default function MainComponet({
     );
   };
 
-  // const handleAddDate = () => {
-  //   if (onAddDate) onAddDate();
-  // };
-
-  // const handleManageDates = () => {
-  //   if (onManageDates) onManageDates();
-  // };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-olive-100 to-olive-200 flex flex-col items-center justify-start p-4">
       <div className="max-w-2xl w-full">
@@ -118,7 +114,7 @@ export default function MainComponet({
         {/* Foto y Contador */}
         <Card className="bg-white/80 backdrop-blur-sm border-olive-300 shadow-lg mb-8">
           <CardContent className="p-6">
-            <div className="relative w-full aspect-[4/3] mb-6 overflow-hidden rounded-lg border-4 border-olive-300 shadow-md">
+            <div className="relative w-full aspect-[3/3] mb-6 overflow-hidden rounded-lg border-4 border-olive-300 shadow-md">
               <img
                 src={nextDateInfo.photo}
                 alt="Foto de nuestra próxima cita"
@@ -158,14 +154,14 @@ export default function MainComponet({
             <div className="text-center">
               <p className="text-olive-700 italic">
                 Nos veremos el{" "}
-                {nextDate.toLocaleDateString("es-ES", {
+                {nextDate?.toLocaleDateString("es-ES", {
                   weekday: "long",
                   year: "numeric",
                   month: "long",
                   day: "numeric",
                 })}{" "}
                 a las{" "}
-                {nextDate.toLocaleTimeString("es-ES", {
+                {nextDate?.toLocaleTimeString("es-ES", {
                   hour: "2-digit",
                   minute: "2-digit",
                 })}
@@ -199,16 +195,42 @@ export default function MainComponet({
                   <ChevronLeft className="h-6 w-6" />
                 </Button>
                 <div className="text-center flex-1">
-                  <img
-                    src={pastDates[currentPastDateIndex]?.photos?.[0]}
-                    alt={
-                      pastDates[currentPastDateIndex]?.description ||
-                      "Cita pasada"
-                    }
-                    className="w-full h-48 md:h-96 object-cover rounded-lg mb-4"
-                  />
+                  <PhotoProvider maskOpacity={0.1} bannerVisible={false}>
+                    <PhotoView
+                      src={
+                        pastDates[currentPastDateIndex]?.photos?.[0] ||
+                        undefined
+                      }
+                    >
+                      <img
+                        src={
+                          pastDates[currentPastDateIndex]?.photos?.[0] ||
+                          undefined
+                        }
+                        alt={
+                          pastDates[currentPastDateIndex]?.description ||
+                          "Cita pasada"
+                        }
+                        className="w-full h-48 md:h-96 object-cover rounded-lg mb-4"
+                      />
+                    </PhotoView>
+                    {/* {pastDates[currentPastDateIndex]?.photos
+                      ?.slice(1)
+                      .map((photo, index) => (
+                        <PhotoView key={index} src={photo}>
+                          <img
+                            src={photo}
+                            alt={
+                              pastDates[currentPastDateIndex]?.description ||
+                              `Cita pasada ${index + 1}`
+                            }
+                            className="hidden"
+                          />
+                        </PhotoView>
+                      ))} */}
+                  </PhotoProvider>
                   <p className="text-olive-700 font-semibold">
-                    {pastDates[currentPastDateIndex]?.date.toLocaleDateString(
+                    {pastDates[currentPastDateIndex]?.date?.toLocaleDateString(
                       "es-ES",
                       {
                         year: "numeric",
@@ -234,20 +256,10 @@ export default function MainComponet({
           </Card>
         )}
 
-        {/* <div className="flex justify-center gap-4">
-          <Button
-            className="bg-olive-600 hover:bg-olive-700 text-white"
-            onClick={handleAddDate}
-          >
-            {finalTexts.addButtonText}
-          </Button>
-          <Button
-            className="bg-olive-600 hover:bg-olive-700 text-white"
-            onClick={handleManageDates}
-          >
-            {finalTexts.manageButtonText}
-          </Button>
-        </div> */}
+        <div className="flex justify-center gap-4">
+          <AddDateModal />
+          <ManageDatesModal dates={allDates} />
+        </div>
 
         <div className="mt-8 text-center">
           <p className="text-olive-700 font-medium">

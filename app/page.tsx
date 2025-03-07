@@ -1,14 +1,20 @@
 import { Suspense } from "react";
-import { getPastDates, getUpcomingDate } from "@/lib/data";
+import { getAllDates } from "@/lib/data";
 import MainComponet from "@/components/main-component";
 
 export default async function DatesPage() {
   try {
-    const [upcomingDate, pastDates] = await Promise.all([
-      getUpcomingDate(),
-      getPastDates(),
-    ]);
+    const allDates = await getAllDates();
+    const datedDates = allDates?.filter((date) => !!date?.date);
 
+    const upcomingDates = datedDates?.find(
+      (date) => (date?.date || new Date()) > new Date()
+    );
+    const pastDates = datedDates?.filter(
+      (date) => (date?.date || new Date()) < new Date()
+    );
+
+    if (!upcomingDates) return;
     return (
       <Suspense
         fallback={
@@ -22,8 +28,9 @@ export default async function DatesPage() {
         }
       >
         <MainComponet
-          upcomingDate={upcomingDate || undefined}
+          upcomingDate={upcomingDates}
           pastDates={pastDates || []}
+          allDates={allDates || []}
         />
       </Suspense>
     );
