@@ -73,7 +73,7 @@ const onEditDate = async (id: string, updatedDate: Partial<DateEvent>) => {
 export function ManageDatesModal({ dates }: ManageDatesModalProps) {
   const [open, setOpen] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  
+
   // Unified edit state
   const [editState, setEditState] = useState<{
     date: Date | null;
@@ -82,7 +82,7 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
   }>({
     date: null,
     description: "",
-    photo: ""
+    photo: "",
   });
 
   const handleEdit = (index: number) => {
@@ -91,7 +91,7 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
     setEditState({
       date: dateToEdit.date,
       description: dateToEdit.description,
-      photo: dateToEdit.photos?.[0] || ""
+      photo: dateToEdit.photos?.[0] || "",
     });
   };
 
@@ -111,9 +111,9 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
   };
 
   const updateEditField = (field: keyof typeof editState, value: any) => {
-    setEditState(prev => ({
+    setEditState((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
@@ -160,7 +160,11 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
                         <input
                           type="date"
                           className="w-full p-1 border rounded"
-                          value={editState.date ? format(editState.date, "yyyy-MM-dd") : ""}
+                          value={
+                            editState.date
+                              ? format(editState.date, "yyyy-MM-dd")
+                              : ""
+                          }
                           onChange={(e) =>
                             updateEditField(
                               "date",
@@ -182,7 +186,9 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
                           type="text"
                           className="w-full p-1 border rounded"
                           value={editState.description}
-                          onChange={(e) => updateEditField("description", e.target.value)}
+                          onChange={(e) =>
+                            updateEditField("description", e.target.value)
+                          }
                         />
                       ) : (
                         date.description
@@ -224,14 +230,17 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
                           >
                             <Pencil className="h-4 w-4" />
                           </Button>
-                          {/* <Button
-                            onClick={() => onDeleteDate(date.id, date.photos)}
-                            size="icon"
-                            variant="ghost"
-                            className="h-8 w-8 text-red-500 hover:text-red-700"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button> */}
+                          {((date?.date && date?.date > new Date()) ||
+                            !!!date.date) && (
+                            <Button
+                              onClick={() => onDeleteDate(date.id, date.photos)}
+                              size="icon"
+                              variant="ghost"
+                              className="h-8 w-8 text-red-500 hover:text-red-700"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          )}
                         </div>
                       )}
                     </TableCell>

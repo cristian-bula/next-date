@@ -15,6 +15,7 @@ export const onAddDate = async (e: Omit<DateEvent, "id">) => {
     if (e?.photoFile) {
       imageUrl = (await uploadImage(e?.photoFile)) || "";
     }
+    console.log(imageUrl, e);
     const newDate = { ...e, photos: [imageUrl] };
     const response = await addDate(newDate);
     toast.success("Date creado con exito 🌚");

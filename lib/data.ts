@@ -1,7 +1,7 @@
 import { DateEvent } from "@/types/date";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/";
-const CLOUD_NAME = process.env.CLAUDINARY_NAME || "";
+const CLOUD_NAME = process.env.NEXT_PUBLIC_CLAUDINARY_NAME || "";
 const UPLOAD_PRESET = "VERCEL";
 
 export const getAllDates = async (): Promise<DateEvent[]> => {

@@ -17,6 +17,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DateEvent } from "@/types/date";
 import { onAddDate } from "@/lib/utils";
 import { revalidateClientPath } from "@/lib/actions";
+import toast from "react-hot-toast";
 
 export function AddDateModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,6 +36,11 @@ export function AddDateModal() {
     }
 
     if (!description) {
+      return;
+    }
+
+    if (photoUrl === "") {
+      toast.error("Ups, agrega una foto plis!");
       return;
     }
 
