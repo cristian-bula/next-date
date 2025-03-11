@@ -103,11 +103,11 @@ export function AddDateModal() {
             </Label>
             <Input
               id="date"
-              type="date"
+              type="datetime-local"
               disabled={isWithoutDate}
-              onChange={(e) =>
-                setDate(e.target.value ? new Date(e.target.value) : null)
-              }
+              onChange={(e) => {
+                setDate(e.target.value ? new Date(e.target.value) : null);
+              }}
             />
           </div>
 

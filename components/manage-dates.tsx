@@ -158,11 +158,11 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
                     <TableCell className="font-medium">
                       {editingIndex === index ? (
                         <input
-                          type="date"
+                          type="datetime-local"
                           className="w-full p-1 border rounded"
                           value={
                             editState.date
-                              ? format(editState.date, "yyyy-MM-dd")
+                              ? format(editState.date, "yyyy-MM-dd'T'HH:mm")
                               : ""
                           }
                           onChange={(e) =>
@@ -173,7 +173,7 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
                           }
                         />
                       ) : date?.date ? (
-                        format(date?.date, "dd/MM/yyyy", {
+                        format(date?.date, "dd/MM/yyyy HH:mm", {
                           locale: es,
                         })
                       ) : (
