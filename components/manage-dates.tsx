@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar, Pencil, Trash2 } from "lucide-react";
+import { Calendar, ImagePlus, Pencil, Trash2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -22,23 +22,16 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { DateEvent } from "@/types/date";
 import toast from "react-hot-toast";
-import { deleteDate, deleteImage, updateDate } from "@/lib/data";
+import { deleteDate, updateDate, uploadImage } from "@/lib/data";
 import { revalidateClientPath } from "@/lib/actions";
 
 interface ManageDatesModalProps {
   dates: DateEvent[];
 }
 
-const onDeleteDate = async (id: string, images: string[]) => {
+const onDeleteDate = async (id: string) => {
   const createMsg = toast.loading("Cargando...");
   try {
-    // images.forEach(async (image) => {
-    //   if (image) {
-    //     const imageId = image.split("/").pop() || "";
-    //     console.log(imageId);
-    //     await deleteImage(imageId);
-    //   }
-    // });
     const response = await deleteDate(id);
     if (!response) {
       return;
@@ -73,6 +66,8 @@ const onEditDate = async (id: string, updatedDate: Partial<DateEvent>) => {
 export function ManageDatesModal({ dates }: ManageDatesModalProps) {
   const [open, setOpen] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [photoUrl, setPhotoUrl] = useState("");
 
   // Unified edit state
   const [editState, setEditState] = useState<{
@@ -95,19 +90,23 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
     });
   };
 
-  const handleSaveEdit = (id: string) => {
+  const handleSaveEdit = async (id: string) => {
     if (editingIndex !== null && editState.date && editState.description) {
+      const newPhotos = file ? [await uploadImage(file)] : [];
       onEditDate(id, {
         date: editState.date,
         description: editState.description,
-        photos: [editState.photo],
+        photos: [...newPhotos, ...(editState.photo as any)],
       });
       setEditingIndex(null);
+      setFile(null);
     }
   };
 
   const handleCancelEdit = () => {
     setEditingIndex(null);
+    setFile(null);
+    setPhotoUrl("");
   };
 
   const updateEditField = (field: keyof typeof editState, value: any) => {
@@ -115,6 +114,20 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
       ...prev,
       [field]: value,
     }));
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result) {
+          setPhotoUrl(event.target.result as string);
+        }
+      };
+      reader.readAsDataURL(file);
+      setFile(file);
+    }
   };
 
   return (
@@ -194,12 +207,40 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
                         date.description
                       )}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="flex w-fit gap-2">
                       <img
                         src={date.photos?.[0] || "/placeholder.svg"}
                         alt={date.description}
-                        className="w-12 h-12 object-cover rounded"
+                        className="w-12 min-w-12 h-12 min-h-12 object-cover rounded"
                       />
+                      {editingIndex === index && (
+                        <button
+                          onClick={() =>
+                            document
+                              .getElementById(`file-input-${index}`)
+                              ?.click()
+                          }
+                          className="h-12 w-12 justify-center items-center flex border border-olive-600 rounded"
+                        >
+                          {photoUrl ? (
+                            <img
+                              src={photoUrl || "/placeholder.svg"}
+                              alt="Vista previa"
+                              className="w-full h-12 object-cover rounded-md"
+                            />
+                          ) : (
+                            <ImagePlus size={32} className="text-olive-600" />
+                          )}
+
+                          <input
+                            id={`file-input-${index}`}
+                            type="file"
+                            accept=".jpg, .jpeg, .png"
+                            onChange={handleFileChange}
+                            className="hidden"
+                          />
+                        </button>
+                      )}
                     </TableCell>
                     <TableCell className="text-right">
                       {editingIndex === index ? (
@@ -233,7 +274,7 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
                           {((date?.date && date?.date > new Date()) ||
                             !!!date.date) && (
                             <Button
-                              onClick={() => onDeleteDate(date.id, date.photos)}
+                              onClick={() => onDeleteDate(date.id)}
                               size="icon"
                               variant="ghost"
                               className="h-8 w-8 text-red-500 hover:text-red-700"
