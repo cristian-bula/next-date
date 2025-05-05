@@ -24,6 +24,7 @@ import { DateEvent } from "@/types/date";
 import toast from "react-hot-toast";
 import { deleteDate, updateDate, uploadImage } from "@/lib/data";
 import { revalidateClientPath } from "@/lib/actions";
+import { PhotoProvider, PhotoView } from "react-photo-view";
 
 interface ManageDatesModalProps {
   dates: DateEvent[];
@@ -93,10 +94,11 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
   const handleSaveEdit = async (id: string) => {
     if (editingIndex !== null && editState.date && editState.description) {
       const newPhotos = file ? [await uploadImage(file)] : [];
+      const currentPhoto = editState.photo.length > 0 ? [editState.photo] : [];
       onEditDate(id, {
         date: editState.date,
         description: editState.description,
-        photos: [...newPhotos, ...(editState.photo as any)],
+        photos: [...newPhotos, ...(currentPhoto as any)],
       });
       setEditingIndex(null);
       setFile(null);
@@ -208,11 +210,15 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
                       )}
                     </TableCell>
                     <TableCell className="flex w-fit gap-2">
-                      <img
-                        src={date.photos?.[0] || "/placeholder.svg"}
-                        alt={date.description}
-                        className="w-12 min-w-12 h-12 min-h-12 object-cover rounded"
-                      />
+                      <PhotoProvider maskOpacity={0.1} bannerVisible={false}>
+                        <PhotoView src={date.photos?.[0] || undefined}>
+                          <img
+                            src={date.photos?.[0] || "/placeholder.svg"}
+                            alt={date.description}
+                            className="w-12 min-w-12 h-12 min-h-12 object-cover rounded cursor-pointer"
+                          />
+                        </PhotoView>
+                      </PhotoProvider>
                       {editingIndex === index && (
                         <button
                           onClick={() =>
