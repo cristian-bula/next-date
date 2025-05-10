@@ -18,8 +18,10 @@
     "@radix-ui/react-slot": "^1.1.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cryptr": "^6.3.0",
     "date-fns": "^3.6.0",
     "dotenv-cli": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.477.0",
     "next": "14.2.16",
     "react": "^18",
@@ -28,9 +30,12 @@
     "react-hot-toast": "^2.5.2",
     "react-photo-view": "^1.2.7",
     "tailwind-merge": "^3.0.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.24.4",
+    "zustand": "^5.0.4"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^20.17.22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
