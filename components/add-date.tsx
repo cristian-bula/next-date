@@ -49,6 +49,7 @@ export function AddDateModal() {
       description,
       photos: [photoUrl],
       photoFile: photoFile,
+      reviews: [],
     };
 
     const response = await onAddDate(newDate);

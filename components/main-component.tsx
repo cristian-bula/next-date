@@ -9,7 +9,7 @@ import { ManageDatesModal } from "./manage-dates";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import { LoginModal } from "./login-modal";
 import { SignupModal } from "./signup-modal";
-import PastDates from "./past-dates2";
+import PastDates from "./past-dates";
 
 type CountdownProps = {
   upcomingDate: DateEvent;
