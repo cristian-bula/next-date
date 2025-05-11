@@ -5,8 +5,8 @@ import jwt from "jsonwebtoken";
 import { serialize } from "cookie";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
-const JWT_EXPIRES_IN = "7d"; // Puedes cambiarlo a lo que prefieras
-const EXPIRES_IN = 7;
+const JWT_EXPIRES_IN = "30d";
+const EXPIRES_IN = 30;
 
 interface LoginRequest {
   email: string;
