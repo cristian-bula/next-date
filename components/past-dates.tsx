@@ -14,9 +14,9 @@ import toast from "react-hot-toast";
 import { Modal, ModalBody, ModalContent, useDisclosure } from "@heroui/modal";
 
 const getAverageRating = (reviews: IReview[]) => {
-  if (!reviews.length) return 0;
-  const total = reviews.reduce((sum, r) => sum + r.rating, 0);
-  return (total / reviews.length).toFixed(1);
+  if (!reviews?.length) return 0;
+  const total = reviews?.reduce((sum, r) => sum + r.rating, 0);
+  return (total / reviews?.length).toFixed(1);
 };
 
 const PastDates = ({ pastDates }: { pastDates: DateEvent[] }) => {
@@ -99,7 +99,7 @@ const PastDates = ({ pastDates }: { pastDates: DateEvent[] }) => {
 
   return (
     <>
-      {pastDates.length > 0 && (
+      {pastDates?.length > 0 && (
         <Card className="bg-white/80 backdrop-blur-sm border-olive-300 shadow-lg mb-8">
           <CardHeader>
             <CardTitle className="text-olive-700 flex items-center gap-2">

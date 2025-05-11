@@ -94,7 +94,7 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
   const handleSaveEdit = async (id: string) => {
     if (editingIndex !== null && editState.date && editState.description) {
       const newPhotos = file ? [await uploadImage(file)] : [];
-      const currentPhoto = editState.photo.length > 0 ? [editState.photo] : [];
+      const currentPhoto = editState?.photo?.length > 0 ? [editState.photo] : [];
       onEditDate(id, {
         date: editState.date,
         description: editState.description,
@@ -151,7 +151,7 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
         </DialogHeader>
 
         <div className="mt-4 max-h-[70vh] overflow-auto">
-          {dates.length === 0 ? (
+          {dates?.length === 0 ? (
             <p className="text-center text-olive-600 py-4">
               No hay citas para mostrar
             </p>
