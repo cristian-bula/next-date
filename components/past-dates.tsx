@@ -181,7 +181,7 @@ const PastDates = ({ pastDates }: { pastDates: DateEvent[] }) => {
           placement="center"
           size="5xl"
           isOpen={!!selectedDate}
-          scrollBehavior="inside"
+          scrollBehavior="outside"
           onOpenChange={handleClose}
         >
           <ModalContent>

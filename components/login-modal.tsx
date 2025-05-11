@@ -14,9 +14,16 @@ import { Input } from "@/components/ui/input";
 import { LogIn } from "lucide-react";
 import toast from "react-hot-toast";
 import { useStore } from "@/store/globalState";
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  useDisclosure,
+} from "@heroui/modal";
 
 export function LoginModal() {
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { setUser } = useStore();
@@ -40,73 +47,84 @@ export function LoginModal() {
       const data = await response.json();
       setUser(data.user);
       toast.success("¡Login exitoso!");
-      setIsOpen(false);
+      onOpenChange();
     } catch (error) {
       toast.error("Error al iniciar sesión.");
     }
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button className="bg-olive-600 hover:bg-olive-700 text-white">
-          Iniciar Sesión
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[400px]">
-        <DialogHeader>
-          <DialogTitle className="text-olive-700 flex items-center gap-2">
-            <LogIn className="h-5 w-5" />
-            Iniciar Sesión
-          </DialogTitle>
-        </DialogHeader>
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email" className="text-olive-700">
-              Correo electrónico
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="tu@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
+    <>
+      <Button
+        onClick={onOpen}
+        className="bg-olive-600 hover:bg-olive-700 text-white"
+      >
+        Iniciar Sesión
+      </Button>
+      <Modal
+        placement="center"
+        size="5xl"
+        isOpen={isOpen}
+        scrollBehavior="outside"
+        onOpenChange={onOpenChange}
+      >
+        <ModalContent>
+          {(onClose) => (
+            <ModalBody className="my-3">
+              <ModalHeader className="text-olive-700 flex items-center gap-2 p-0">
+                <LogIn className="h-5 w-5" />
+                Iniciar Sesión
+              </ModalHeader>
+              <form onSubmit={handleLogin} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-olive-700">
+                    Correo electrónico
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="tu@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="password" className="text-olive-700">
-              Contraseña
-            </Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="********"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
+                <div className="space-y-2">
+                  <Label htmlFor="password" className="text-olive-700">
+                    Contraseña
+                  </Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="********"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
 
-          <div className="flex justify-end gap-2 pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setIsOpen(false)}
-              className="border-olive-300 text-olive-700 hover:bg-olive-50"
-            >
-              Cancelar
-            </Button>
-            <Button
-              type="submit"
-              className="bg-olive-600 hover:bg-olive-700 text-white"
-            >
-              Entrar
-            </Button>
-          </div>
-        </form>
-      </DialogContent>
-    </Dialog>
+                <div className="flex justify-end gap-2 pt-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => onClose()}
+                    className="border-olive-300 text-olive-700 hover:bg-olive-50"
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="bg-olive-600 hover:bg-olive-700 text-white"
+                  >
+                    Entrar
+                  </Button>
+                </div>
+              </form>
+            </ModalBody>
+          )}
+        </ModalContent>
+      </Modal>
+    </>
   );
 }
