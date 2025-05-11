@@ -49,6 +49,8 @@ const PastDates = ({ pastDates }: { pastDates: DateEvent[] }) => {
       userId: user?.id || "",
       user: user as any,
     };
+
+    console.log(user)
     const createMsg = toast.loading("Cargando...");
 
     try {
