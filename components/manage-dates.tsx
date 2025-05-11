@@ -74,11 +74,11 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
   const [editState, setEditState] = useState<{
     date: Date | null;
     description: string;
-    photo: string;
+    photo: string[];
   }>({
     date: null,
     description: "",
-    photo: "",
+    photo: [""],
   });
 
   const handleEdit = (index: number) => {
@@ -87,19 +87,18 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
     setEditState({
       date: dateToEdit.date,
       description: dateToEdit.description,
-      photo: dateToEdit.photos?.[0] || "",
+      photo: dateToEdit.photos || "",
     });
   };
 
   const handleSaveEdit = async (id: string) => {
     if (editingIndex !== null && editState.date && editState.description) {
-      const newPhotos = file ? [await uploadImage(file)] : [];
-      const currentPhoto =
-        editState?.photo?.length > 0 ? [editState.photo] : [];
+      const newPhotos = file ? [(await uploadImage(file)) || ""] : [];
+      const currentPhoto = editState.photo;
       onEditDate(id, {
         date: editState.date,
         description: editState.description,
-        photos: [...newPhotos, ...(currentPhoto as any)],
+        photos: [...newPhotos, ...currentPhoto],
       });
       setEditingIndex(null);
       setFile(null);
