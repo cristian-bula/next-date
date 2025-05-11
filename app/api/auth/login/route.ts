@@ -2,9 +2,11 @@ import prisma from "@/lib/prisma";
 import { comparePassword } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
+import { serialize } from "cookie";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 const JWT_EXPIRES_IN = "7d"; // Puedes cambiarlo a lo que prefieras
+const EXPIRES_IN = 7;
 
 interface LoginRequest {
   email: string;
@@ -36,13 +38,15 @@ export async function POST(request: NextRequest) {
     const { password, ...safeUser } = user;
 
     const token = jwt.sign(
-      { userId: user.id, email: user.email },
+      { userId: user.id, email: user.email, role: user.role },
       JWT_SECRET,
-      { expiresIn: JWT_EXPIRES_IN }
+      {
+        expiresIn: JWT_EXPIRES_IN,
+      }
     );
 
     const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + 7);
+    expiresAt.setDate(expiresAt.getDate() + EXPIRES_IN);
 
     await prisma.tokenWhiteList.create({
       data: {
@@ -52,11 +56,24 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       user: safeUser,
-      token,
     });
+
+    // Setear cookie segura y HttpOnly
+    response.headers.set(
+      "Set-Cookie",
+      serialize("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * EXPIRES_IN,
+      })
+    );
+
+    return response;
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json(

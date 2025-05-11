@@ -75,3 +75,8 @@
   }
 }
 
+
+.PhotoView-Slider__Backdrop {
+  pointer-events: none !important;
+  z-index: 9999 !important;
+}

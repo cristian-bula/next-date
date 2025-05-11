@@ -12,11 +12,10 @@ export const getAllDates = async (): Promise<DateEvent[]> => {
       },
       method: "GET",
     });
-
     if (!res.ok) {
       throw new Error(`Error: ${res.status}`);
     }
-
+    
     const data = await res.json();
 
     return data.map((item: any) => ({

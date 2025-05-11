@@ -1,3 +1,4 @@
+import { validateToken } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { DateEvent } from "@/types/date";
 import { NextResponse } from "next/server";
@@ -11,6 +12,7 @@ export async function PATCH(
     const { id } = params;
     const body: Partial<DateEvent> = await request.json();
 
+    await validateToken();
     // Actualizar en base de datos
     const updatedDate = await prisma.dates.update({
       where: { id },
@@ -49,6 +51,8 @@ export async function DELETE(
 ) {
   try {
     const { id } = params;
+
+    await validateToken();
 
     // Eliminar de base de datos
     await prisma.dates.delete({

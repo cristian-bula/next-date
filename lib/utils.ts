@@ -4,6 +4,7 @@ import { twMerge } from "tailwind-merge";
 import { addDate, uploadImage } from "./data";
 import toast from "react-hot-toast";
 import Cryptr from "cryptr";
+import { revalidateClientPath } from "./actions";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -18,6 +19,10 @@ export const onAddDate = async (e: Omit<DateEvent, "id">) => {
     }
     const newDate = { ...e, photos: [imageUrl] };
     const response = await addDate(newDate);
+    if (!response?.id) {
+      throw new Error();
+    }
+    revalidateClientPath("/");
     toast.success("Date creado con exito 🌚");
     return response;
   } catch (e) {

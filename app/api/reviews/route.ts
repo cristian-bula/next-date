@@ -8,12 +8,26 @@ export async function POST(request: Request) {
     const body: Omit<IReview, "userId"> = await request.json();
 
     // Validar token y obtener userId desde el token
-    const decoded = await validateToken(request);
+    const decoded = await validateToken();
     const userId = decoded.userId;
 
     if (!body.dateId || !body.rating) {
       return NextResponse.json(
         { error: "Missing required fields" },
+        { status: 400 }
+      );
+    }
+
+    const existingReview = await prisma.reviews.findFirst({
+      where: {
+        dateId: body.dateId,
+        userId,
+      },
+    });
+
+    if (existingReview) {
+      return NextResponse.json(
+        { error: "Review already exists" },
         { status: 400 }
       );
     }

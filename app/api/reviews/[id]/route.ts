@@ -11,7 +11,7 @@ export async function PATCH(
     const { id } = params;
     const body: Partial<IReview> = await request.json();
 
-    const user = await validateToken(request);
+    const user = await validateToken();
 
     const existingReview = await prisma.reviews.findUnique({
       where: { id },
@@ -21,9 +21,9 @@ export async function PATCH(
       return NextResponse.json({ error: "Review not found" }, { status: 404 });
     }
 
-    if (existingReview.userId !== user.userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
-    }
+    // if (existingReview.userId !== user.userId) {
+    //   return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    // }
 
     const data = await prisma.reviews.update({
       where: { id },
@@ -51,7 +51,8 @@ export async function DELETE(
   try {
     const { id } = params;
 
-    const user = await validateToken(request);
+    console.log("AYUDa", id)
+    const user = await validateToken();
 
     const existingReview = await prisma.reviews.findUnique({
       where: { id },
@@ -64,7 +65,6 @@ export async function DELETE(
     if (existingReview.userId !== user.userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
-
     await prisma.reviews.delete({
       where: { id },
     });

@@ -1,14 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Heart, Clock, ChevronLeft, ChevronRight } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Heart, Clock } from "lucide-react";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { DateEvent } from "@/types/date";
 import { AddDateModal } from "./add-date";
 import { ManageDatesModal } from "./manage-dates";
 import { PhotoProvider, PhotoView } from "react-photo-view";
-import "react-photo-view/dist/react-photo-view.css";
+import { LoginModal } from "./login-modal";
+import { SignupModal } from "./signup-modal";
+import PastDates from "./past-dates2";
 
 type CountdownProps = {
   upcomingDate: DateEvent;
@@ -51,8 +52,6 @@ export default function MainComponet({
     seconds: 0,
   });
 
-  const [currentPastDateIndex, setCurrentPastDateIndex] = useState(0);
-
   useEffect(() => {
     if (upcomingDate?.date) {
       setNextDate(upcomingDate.date);
@@ -84,20 +83,6 @@ export default function MainComponet({
 
     return () => clearInterval(timer);
   }, [nextDate, upcomingDate]);
-
-  const handlePrevDate = () => {
-    if (pastDates.length === 0) return;
-    setCurrentPastDateIndex((prevIndex) =>
-      prevIndex > 0 ? prevIndex - 1 : pastDates.length - 1
-    );
-  };
-
-  const handleNextDate = () => {
-    if (pastDates.length === 0) return;
-    setCurrentPastDateIndex((prevIndex) =>
-      prevIndex < pastDates.length - 1 ? prevIndex + 1 : 0
-    );
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-olive-100 to-olive-200 flex flex-col items-center justify-start p-4">
@@ -180,89 +165,16 @@ export default function MainComponet({
         </Card>
 
         {/* Carrusel de citas anteriores */}
-        {pastDates.length > 0 && (
-          <Card className="bg-white/80 backdrop-blur-sm border-olive-300 shadow-lg mb-8">
-            <CardHeader>
-              <CardTitle className="text-olive-700 flex items-center gap-2">
-                <Heart className="h-5 w-5 text-red-500" />
-                {finalTexts.pastDatesTitle}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <Button
-                  onClick={handlePrevDate}
-                  variant="ghost"
-                  size="icon"
-                  disabled={pastDates.length <= 1}
-                >
-                  <ChevronLeft className="h-6 w-6" />
-                </Button>
-                <div className="text-center flex-1">
-                  <PhotoProvider maskOpacity={0.1} bannerVisible={false}>
-                    <PhotoView
-                      src={
-                        pastDates[currentPastDateIndex]?.photos?.[0] ||
-                        undefined
-                      }
-                    >
-                      <img
-                        src={
-                          pastDates[currentPastDateIndex]?.photos?.[0] ||
-                          undefined
-                        }
-                        alt={
-                          pastDates[currentPastDateIndex]?.description ||
-                          "Cita pasada"
-                        }
-                        className="w-full h-48 md:h-96 object-cover rounded-lg mb-4 cursor-pointer"
-                      />
-                    </PhotoView>
-                    {/* {pastDates[currentPastDateIndex]?.photos
-                      ?.slice(1)
-                      .map((photo, index) => (
-                        <PhotoView key={index} src={photo}>
-                          <img
-                            src={photo}
-                            alt={
-                              pastDates[currentPastDateIndex]?.description ||
-                              `Cita pasada ${index + 1}`
-                            }
-                            className="hidden"
-                          />
-                        </PhotoView>
-                      ))} */}
-                  </PhotoProvider>
-                  <p className="text-olive-700 font-semibold">
-                    {pastDates[currentPastDateIndex]?.date?.toLocaleDateString(
-                      "es-ES",
-                      {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      }
-                    )}
-                  </p>
-                  <p className="text-olive-600">
-                    {pastDates[currentPastDateIndex]?.description}
-                  </p>
-                </div>
-                <Button
-                  onClick={handleNextDate}
-                  variant="ghost"
-                  size="icon"
-                  disabled={pastDates.length <= 1}
-                >
-                  <ChevronRight className="h-6 w-6" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+        <PastDates pastDates={pastDates} />
 
         <div className="flex justify-center gap-4">
           <AddDateModal />
           <ManageDatesModal dates={allDates} />
+        </div>
+
+        <div className="flex justify-center mt-2 gap-4">
+          <LoginModal />
+          <SignupModal />
         </div>
 
         <div className="mt-8 text-center">

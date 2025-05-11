@@ -1,3 +1,4 @@
+import { validateToken } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { IUser } from "@/types/user";
 import { NextResponse } from "next/server";
@@ -10,6 +11,7 @@ export async function PATCH(
   try {
     const { id } = params;
     const body: Partial<IUser> = await request.json();
+    await validateToken();
 
     const data = await prisma.users.update({
       where: { id },
@@ -38,6 +40,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = params;
+    await validateToken();
 
     await prisma.users.delete({
       where: { id },

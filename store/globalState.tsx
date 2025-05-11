@@ -21,8 +21,10 @@ export const useStore = create<
     }),
     {
       name: "gotuuri-agencies-web",
-      storage: createJSONStorage(() => sessionStorage),
-      partialize: (state) => ({}),
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        user: state.user,
+      }),
     }
   )
 );

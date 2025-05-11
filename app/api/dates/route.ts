@@ -1,9 +1,11 @@
+import { validateToken } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    await validateToken();
 
     if (!body.description) {
       return NextResponse.json(
@@ -42,6 +44,7 @@ export async function GET() {
   try {
     const allDates = await prisma.dates.findMany({
       orderBy: { date: "asc" },
+      include: { reviews: { include: { user: true } } },
     });
 
     return NextResponse.json(allDates);
