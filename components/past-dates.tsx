@@ -251,7 +251,7 @@ const PastDates = ({ pastDates }: { pastDates: DateEvent[] }) => {
                                   alt={review?.user?.name || "Usuario"}
                                   width={24}
                                   height={24}
-                                  className="rounded-full object-cover"
+                                  className="rounded-full object-cover w-6 h-6"
                                 />
                               )}
                               <span className="text-olive-700 font-medium">
