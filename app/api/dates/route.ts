@@ -42,7 +42,7 @@ export async function POST(request: Request) {
 
 export async function GET() {
   try {
-    await validateToken();
+    // await validateToken();
     const allDates = await prisma.dates.findMany({
       orderBy: { date: "asc" },
       include: { reviews: { include: { user: true } } },
