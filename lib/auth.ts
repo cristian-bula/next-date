@@ -45,7 +45,6 @@ export async function validateToken() {
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
-
     // Verificar whitelist en DB
     const validToken = await prisma.tokenWhiteList.findFirst({
       where: {

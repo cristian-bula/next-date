@@ -172,7 +172,10 @@ export default function MainComponet({
           <ManageDatesModal dates={allDates} />
         </div>
 
-       
+        <div className="flex justify-center mt-2 gap-4">
+          <LoginModal />
+          <SignupModal />
+        </div>
 
         <div className="mt-8 text-center">
           <p className="text-olive-700 font-medium">

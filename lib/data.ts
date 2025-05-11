@@ -15,9 +15,9 @@ export const getAllDates = async (): Promise<DateEvent[]> => {
     if (!res.ok) {
       throw new Error(`Error: ${res.status}`);
     }
-    
-    const data = await res.json();
 
+    const data = await res.json();
+    if (!data) throw new Error(`Error: ${res.status}`);
     return data.map((item: any) => ({
       ...item,
       date: item.date ? new Date(item.date) : null,
