@@ -84,6 +84,29 @@ export default function MainComponet({
     return () => clearInterval(timer);
   }, [nextDate, upcomingDate]);
 
+  function generateGoogleCalendarLink(date: Date, description: string) {
+    const start = formatDateForCalendar(date);
+    const end = formatDateForCalendar(
+      new Date(date.getTime() + 60 * 60 * 1000)
+    ); // 1 hora después
+
+    const params = new URLSearchParams({
+      action: "TEMPLATE",
+      text: "Nuestra Próxima Cita 💖",
+      dates: `${start}/${end}`,
+      details: description,
+    });
+
+    return `https://www.google.com/calendar/render?${params.toString()}`;
+  }
+
+  function formatDateForCalendar(date: Date) {
+    return date
+      .toISOString()
+      .replace(/[-:]|\.\d{3}/g, "")
+      .slice(0, 15); // YYYYMMDDTHHMMSSZ
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-olive-100 to-olive-200 flex flex-col items-center justify-start p-4">
       <div className="max-w-2xl w-full">
@@ -160,6 +183,20 @@ export default function MainComponet({
                   {nextDateInfo.description}
                 </p>
               )}
+            </div>
+            <div className="text-center mt-4">
+              <a
+                href={generateGoogleCalendarLink(
+                  nextDate,
+                  nextDateInfo.description || "Nuestra próxima cita"
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-4 py-2 bg-olive-600 text-white rounded-lg hover:bg-olive-700 transition"
+              >
+                {/* <CalendarPlus className="mr-2 h-5 w-5" /> */}
+                Agregar al Calendario
+              </a>
             </div>
           </CardContent>
         </Card>
