@@ -92,7 +92,7 @@ export default function MainComponet({
 
     const params = new URLSearchParams({
       action: "TEMPLATE",
-      text: "Nuestra Próxima Cita 💖",
+      text: description,
       dates: `${start}/${end}`,
       details: description,
     });
