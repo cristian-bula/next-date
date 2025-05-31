@@ -19,6 +19,7 @@ export async function PATCH(
       data: {
         ...(body.date && { date: new Date(body.date) }),
         ...(body.description && { description: body.description }),
+        ...(body.dressCode && { dressCode: body.dressCode }),
         ...(body.photos && { photos: body.photos }),
       },
     });
@@ -30,6 +31,7 @@ export async function PATCH(
       data: {
         ...(body.date && { date: new Date(body.date) }),
         ...(body.description && { description: body.description }),
+        ...(body.dressCode && { dressCode: body.dressCode }),
         ...(body.photos && { photos: body.photos }),
       },
     });

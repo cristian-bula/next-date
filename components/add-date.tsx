@@ -25,10 +25,10 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@heroui/modal";
-
 export function AddDateModal() {
   const [date, setDate] = useState<Date | null>(null);
   const [description, setDescription] = useState("");
+  const [dressCode, setDressCode] = useState("No aplica");
   const [photoUrl, setPhotoUrl] = useState("");
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -54,6 +54,7 @@ export function AddDateModal() {
     const newDate: Omit<DateEvent, "id"> = {
       date: isWithoutDate ? null : date,
       description,
+      dressCode: dressCode || "No aplica",
       photos: [photoUrl],
       photoFile: photoFile,
       reviews: [],
@@ -153,6 +154,25 @@ export function AddDateModal() {
                     onChange={(e) => setDescription(e.target.value)}
                     required
                   />
+                </div>
+
+                <div className="space-y-2 flex flex-col">
+                  <Label htmlFor="dressCode" className="text-olive-700">
+                    Codigo de vestimenta
+                  </Label>
+                  <select
+                    id="dressCode"
+                    value={dressCode}
+                    onChange={(e) => setDressCode(e.target.value)}
+                    className="bg-white rounded-md px-2 border-1 border-gray-200 py-2 text-sm"
+                  >
+                    <option value="">Código de vestimenta</option>
+                    <option value="Formal">Formal</option>
+                    <option value="Informal">Informal</option>
+                    <option value="Elegante">Elegante</option>
+                    <option value="Casual">Casual</option>
+                    <option value="Deportivo">Deportivo</option>
+                  </select>
                 </div>
 
                 <div className="space-y-2">

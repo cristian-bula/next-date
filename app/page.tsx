@@ -9,14 +9,10 @@ export default async function DatesPage() {
     const allDates = await getAllDates();
     const datedDates = allDates?.filter((date) => !!date?.date);
 
-    const upcomingDates = datedDates?.find(
-      (date) => (date?.date || new Date()) > new Date()
-    );
     const pastDates = datedDates
       ?.filter((date) => (date?.date || new Date()) < new Date())
       ?.sort((a, b) => (b.date?.getTime() || 0) - (a.date?.getTime() || 0));
 
-    if (!upcomingDates) return;
     return (
       <Suspense
         fallback={
@@ -29,11 +25,7 @@ export default async function DatesPage() {
           </div>
         }
       >
-        <MainComponet
-          upcomingDate={upcomingDates}
-          pastDates={pastDates || []}
-          allDates={allDates || []}
-        />
+        <MainComponet pastDates={pastDates || []} allDates={allDates || []} />
       </Suspense>
     );
   } catch (error) {

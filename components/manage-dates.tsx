@@ -169,6 +169,9 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
                           Descripción
                         </TableHead>
                         <TableHead className="min-w-[100px]">Foto</TableHead>
+                        <TableHead className="min-w-[100px]">
+                          Código de vestimenda
+                        </TableHead>
                         <TableHead className="text-right w-[100px]">
                           Acciones
                         </TableHead>
@@ -265,6 +268,9 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
                                 />
                               </button>
                             )}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            {date.dressCode || "No aplica"}
                           </TableCell>
                           <TableCell className="text-right">
                             {editingIndex === index ? (

@@ -17,6 +17,7 @@ export async function POST(request: Request) {
       data: {
         date: body.date,
         description: body.description,
+        dressCode: body?.dressCode || "No aplica",
         photos: body.photos,
       },
     });
@@ -26,6 +27,7 @@ export async function POST(request: Request) {
         dateId: newDate.id,
         date: body.date,
         description: body.description,
+        dressCode: body?.dressCode || "No aplica",
         photos: body.photos,
       },
     });

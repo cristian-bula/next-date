@@ -126,7 +126,7 @@ const PastDates = ({ pastDates }: { pastDates: DateEvent[] }) => {
                         className="w-full h-48 md:h-72 object-cover"
                         draggable={false}
                       />
-                      <CardContent>
+                      <CardContent className="px-5">
                         <p className="text-olive-700 font-semibold mt-4">
                           {date.date?.toLocaleDateString("es-ES", {
                             year: "numeric",
@@ -134,12 +134,15 @@ const PastDates = ({ pastDates }: { pastDates: DateEvent[] }) => {
                             day: "numeric",
                           })}
                         </p>
-                        <p className="text-olive-600 truncate">
+                        <p className="text-olive-600 line-clamp-1 text-xs">
+                          Código de vestimenta: {date.dressCode || "No aplica"}
+                        </p>
+                        <p className="text-olive-600 line-clamp-2">
                           {date.description}
                         </p>
                         <div className="flex items-center gap-1 mt-1 text-olive-500">
                           <Heart className="w-4 h-4 fill-olive-500" />
-                          {getAverageRating(date.reviews)} / 5
+                          {getAverageRating(date.reviews)} / 5.0
                         </div>
                       </CardContent>
                     </Card>
@@ -233,6 +236,7 @@ const PastDates = ({ pastDates }: { pastDates: DateEvent[] }) => {
                       value={newComment}
                       onChange={(e) => setNewComment(e.target.value)}
                       placeholder="Escribe un comentario..."
+                      rows={4}
                       className="w-full border roundsed p-2 mb-2 text-sm"
                     />
                     <h3 className="text-md font-semibold mb-2">Reseñas</h3>

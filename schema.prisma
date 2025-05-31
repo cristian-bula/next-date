@@ -12,6 +12,7 @@ model dates {
   date        DateTime?
   description String
   photos      String[]
+  dressCode   String?
   createdAt   DateTime? @default(now())
   updatedAt   DateTime? @updatedAt
   reviews     reviews[] @relation("DateReviews")
@@ -23,6 +24,7 @@ model dates_backups {
   date        DateTime?
   description String
   photos      String[]
+  dressCode   String?
   createdAt   DateTime? @default(now())
   updatedAt   DateTime? @updatedAt
 }
