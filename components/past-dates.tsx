@@ -100,6 +100,15 @@ const PastDates = ({ pastDates }: { pastDates: DateEvent[] }) => {
 
   return (
     <>
+      <p
+        onClick={() => {
+          fetch("/api/test", {
+            method: "POST",
+          });
+        }}
+      >
+        PRUEBA
+      </p>
       {pastDates?.length > 0 && (
         <Card className="bg-white/80 backdrop-blur-sm border-olive-300 shadow-lg mb-8">
           <CardHeader>

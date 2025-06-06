@@ -2,6 +2,18 @@ import { validateToken } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { DateEvent } from "@/types/date";
 import { NextResponse } from "next/server";
+import webpush from "web-push";
+
+const vapidKeys = {
+  publicKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "",
+  privateKey: process.env.VAPID_PRIVATE_KEY || "",
+};
+
+webpush.setVapidDetails(
+  "mailto:cristianbula5656@gmail.com",
+  vapidKeys.publicKey,
+  vapidKeys.privateKey
+);
 
 // Para actualizar una cita
 export async function PATCH(
@@ -14,7 +26,7 @@ export async function PATCH(
 
     await validateToken();
     // Actualizar en base de datos
-    const updatedDate = await prisma.dates.update({
+    const updatedDate = await prisma?.dates?.update({
       where: { id },
       data: {
         ...(body.date && { date: new Date(body.date) }),
@@ -35,6 +47,23 @@ export async function PATCH(
         ...(body.photos && { photos: body.photos }),
       },
     });
+
+    const subscriptions = await prisma.subscription.findMany();
+
+    for (const sub of subscriptions) {
+      try {
+        const response = await webpush.sendNotification(
+          JSON.parse(sub.subscription),
+          JSON.stringify({
+            title: "Se ha actualizado una cita 👀!",
+            body: `Se ha actualizado la cita ${body.description} 📅`,
+          })
+        );
+        console.log(response);
+      } catch (error) {
+        console.error("Error sending notification to subscription:", error);
+      }
+    }
 
     return NextResponse.json(updatedDate);
   } catch (error) {

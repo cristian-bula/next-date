@@ -38,6 +38,7 @@ model users {
   role      String
   reviews   reviews[]        @relation("UserReviews")
   tokens    tokenWhiteList[] @relation("UserTokens")
+  // subscriptions subscription[] @relation("UserSubscriptions")
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
 }
@@ -61,4 +62,13 @@ model tokenWhiteList {
   user      users    @relation("UserTokens", fields: [userId], references: [id])
   createdAt DateTime @default(now())
   expiresAt DateTime
+}
+
+model subscription {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  subscription String
+  // userId      String   @db.ObjectId
+  // user        users    @relation("UserSubscriptions", fields: [userId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
