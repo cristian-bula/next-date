@@ -3,15 +3,16 @@ self.addEventListener("push", function (event) {
     const data = event.data.json();
     const options = {
       body: data.body,
-      icon: "/app/favicon.ico",
-      badge: "/app/favicon.ico",
+      icon: "/icons/icon-192x192.png",
+      badge: "/icons/icon-192x192.png",
       tag: "date-notification",
       requireInteraction: true,
       actions: [
         {
           action: "view",
-          title: "Ver fecha",
-          icon: "/app/favicon.ico",
+          title: "Ver cita",
+          icon: "/icons/icon-192x192.png",
+          url: "/",
         },
       ],
       vibrate: [100, 50, 100],

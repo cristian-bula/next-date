@@ -12,6 +12,7 @@ import { revalidateClientPath } from "@/lib/actions";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import toast from "react-hot-toast";
 import { Modal, ModalBody, ModalContent, useDisclosure } from "@heroui/modal";
+import { IUser } from "@/types/user";
 
 const getAverageRating = (reviews: IReview[]) => {
   if (!reviews?.length) return 0;
@@ -47,7 +48,7 @@ const PastDates = ({ pastDates }: { pastDates: DateEvent[] }) => {
       comment: newComment,
       dateId: selectedDate.id,
       userId: user?.id || "",
-      user: user as any,
+      user: user as IUser,
     };
 
     const createMsg = toast.loading("Cargando...");
@@ -261,15 +262,19 @@ const PastDates = ({ pastDates }: { pastDates: DateEvent[] }) => {
                             <div className="flex items-center gap-2 mb-1">
                               {review?.user?.photo && (
                                 <img
-                                  src={review?.user?.photo}
-                                  alt={review?.user?.name || "Usuario"}
+                                  src={review?.user?.photo || user?.photo}
+                                  alt={
+                                    review?.user?.name ||
+                                    user?.name ||
+                                    "Usuario"
+                                  }
                                   width={24}
                                   height={24}
                                   className="rounded-full object-cover w-6 h-6"
                                 />
                               )}
                               <span className="text-olive-700 font-medium">
-                                {review?.user?.name || "Anónimo"}
+                                {review?.user?.name || user?.name || "Tú"}
                               </span>
                             </div>
                             <div className="flex items-center gap-1 text-olive-500 mb-1">

@@ -18,7 +18,8 @@ webpush.setVapidDetails(
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    await validateToken();
+    const decoded = await validateToken();
+    const userId = decoded.userId;
 
     if (!body.description) {
       return NextResponse.json(
@@ -36,6 +37,11 @@ export async function POST(request: Request) {
     });
 
     const subscriptions = await prisma.subscription.findMany();
+    const user = await prisma.users.findUnique({
+      where: {
+        id: userId,
+      },
+    });
 
     for (const sub of subscriptions) {
       try {
@@ -43,7 +49,9 @@ export async function POST(request: Request) {
           JSON.parse(sub.subscription),
           JSON.stringify({
             title: "Se agregó una nueva fecha 🥰!",
-            body: `Se ha agregado una nueva fecha: ${body.description} para el ${body.date} por ${body.user?.name || "Alguien"} 🎉`,
+            body: `Se ha agregado una nueva fecha: ${
+              body.description
+            } para el ${body.date} por ${user?.name || "alguien"} 🎉`,
           })
         );
         console.log(response);
