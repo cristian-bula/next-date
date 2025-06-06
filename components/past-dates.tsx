@@ -101,6 +101,7 @@ const PastDates = ({ pastDates }: { pastDates: DateEvent[] }) => {
   return (
     <>
       {/* <p
+        className="text-primary cursor-pointer"
         onClick={() => {
           fetch("/api/test", {
             method: "POST",
