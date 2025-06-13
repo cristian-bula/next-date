@@ -262,7 +262,7 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
                                 <input
                                   id={`file-input-${index}`}
                                   type="file"
-                                  accept=".jpg, .jpeg, .png"
+                                  accept="image/*"
                                   onChange={handleFileChange}
                                   className="hidden"
                                 />
