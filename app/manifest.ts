@@ -7,7 +7,7 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "Contador para nuestra próxima cita romántica",
     start_url: "/",
     display: "standalone",
-    background_color: "#e2e8cf",
+    background_color: "#b0c29a",
     theme_color: "#e2e8cf",
     icons: [
       {
