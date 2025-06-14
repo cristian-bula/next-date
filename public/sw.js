@@ -7,18 +7,9 @@ self.addEventListener("push", function (event) {
       badge: "/icons/icon-192x192.png",
       tag: "date-notification",
       requireInteraction: true,
-      actions: [
-        {
-          action: "view",
-          title: "Ver cita",
-          icon: "/icons/icon-192x192.png",
-          url: "/",
-        },
-      ],
       vibrate: [100, 50, 100],
       data: {
-        dateOfArrival: Date.now(),
-        primaryKey: "2",
+        url: "/",
       },
     };
     event.waitUntil(self.registration.showNotification(data.title, options));
@@ -28,30 +19,23 @@ self.addEventListener("push", function (event) {
 self.addEventListener("notificationclick", function (event) {
   event.notification.close();
 
-  if (event.action === "view") {
-    event.waitUntil(
-      clients
-        .matchAll({
-          type: "window",
-          includeUncontrolled: true,
-        })
-        .then((windowClients) => {
-          let matchingClient;
+  const urlToOpen = new URL(
+    event.notification.data?.url || "/",
+    self.location.origin
+  ).href;
 
-          for (let i = 0; i < windowClients.length; i++) {
-            const windowClient = windowClients[i];
-            if (windowClient.url === "/" && "focus" in windowClient) {
-              matchingClient = windowClient;
-              break;
-            }
+  event.waitUntil(
+    clients
+      .matchAll({ type: "window", includeUncontrolled: true })
+      .then(function (clientList) {
+        for (const client of clientList) {
+          if (client.url === urlToOpen && "focus" in client) {
+            return client.focus();
           }
-
-          if (matchingClient) {
-            return matchingClient.focus();
-          } else {
-            return clients.openWindow("/");
-          }
-        })
-    );
-  }
+        }
+        if (clients.openWindow) {
+          return clients.openWindow(urlToOpen);
+        }
+      })
+  );
 });
