@@ -84,7 +84,7 @@ export async function GET() {
   try {
     // await validateToken();
     const allDates = await prisma.dates.findMany({
-      orderBy: { date: "asc" },
+      orderBy: { date: "desc" },
       include: { reviews: { include: { user: true } } },
     });
 

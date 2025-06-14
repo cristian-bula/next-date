@@ -14,6 +14,7 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@heroui/modal";
+import { revalidateClientPath } from "@/lib/actions";
 
 export function LoginModal() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -40,6 +41,7 @@ export function LoginModal() {
       const data = await response.json();
       setUser(data.user);
       toast.success("¡Login exitoso!");
+      revalidateClientPath("/");
       onOpenChange();
     } catch (error) {
       toast.error("Error al iniciar sesión.");

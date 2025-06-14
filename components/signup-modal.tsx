@@ -53,7 +53,7 @@ export function SignupModal() {
   return (
     <>
       <Button
-        onClick={onOpen}
+        // onClick={onOpen}
         className="bg-olive-600 hover:bg-olive-700 text-white"
       >
         Registrarse

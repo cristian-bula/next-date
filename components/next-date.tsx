@@ -7,9 +7,9 @@ import { DateEvent } from "@/types/date";
 import { useKeenSlider } from "keen-slider/react";
 
 const NextDate = ({ allDates }: { allDates: DateEvent[] }) => {
-  const nextDates = allDates?.filter(
-    (date) => (date?.date || new Date()) > new Date()
-  );
+  const nextDates = allDates
+    ?.filter((date) => (date?.date || new Date()) > new Date())
+    .sort((a, b) => (a.date?.getTime() || 0) - (b.date?.getTime() || 0));
 
   const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({
     slides: { perView: 1, spacing: 8 },

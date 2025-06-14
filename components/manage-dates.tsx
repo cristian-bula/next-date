@@ -149,8 +149,8 @@ export function ManageDatesModal({ dates }: ManageDatesModalProps) {
       >
         <ModalContent>
           {(onClose) => (
-            <ModalBody className="py-4">
-              <ModalHeader className="text-olive-700 flex items-center gap-2 p-0">
+            <ModalBody className="py-4 px-2">
+              <ModalHeader className="text-olive-700 flex items-center gap-2 p-0 px-4">
                 <Calendar className="h-5 w-5" />
                 Gestionar Citas
               </ModalHeader>
