@@ -123,7 +123,7 @@ const TodoComponent: React.FC<TodoComponentProps> = ({ todos }) => {
                   )}
                 </button>
                 <span
-                  className={`text-gray-800 ${
+                  className={`text-gray-800 text-sm ${
                     todo.completed ? "line-through text-gray-400" : ""
                   }`}
                 >

@@ -10,31 +10,27 @@ import {
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { LoginModal } from "@/components/login-modal";
-import { DynamicIcon } from "lucide-react/dynamic";
+import { CalendarHeart, Film, ListChecks, MessageSquareHeart } from "lucide-react";
 
 const sections = [
   {
     title: "Citas",
-    description: "Encuentra y gestiona tus citas románticas",
-    icon: "calendar-heart",
+    Icon: CalendarHeart,
     href: "/dates",
   },
   {
-    title: "Tareas",
-    description: "Organiza tus tareas y actividades",
-    icon: "list-checks",
+    title: "To do's",
+    Icon: ListChecks,
     href: "/todos",
   },
   {
-    title: "Cine",
-    description: "Descubre películas y eventos cinematográficos",
-    icon: "film",
+    title: "Peliculas",
+    Icon: Film,
     href: "/cine",
   },
   {
     title: "Chats",
-    description: "Mantén conversaciones con tus contactos",
-    icon: "message-square-heart",
+    Icon: MessageSquareHeart,
     href: "/chats",
   },
 ];
@@ -45,14 +41,14 @@ const Page = () => {
       <Image
         src="/icon.png"
         alt="Logo"
-        className="w-24 h-24 mx-auto mb-12"
+        className="w-24 h-24 mx-auto mb-6"
         width={100}
         height={100}
       />
-      <h1 className="text-3xl font-bold mb-8 text-olive-700 text-center">
+      <h1 className="text-3xl font-bold mb-6 text-olive-700 text-center">
         Just the two of us
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4">
         {sections.map((section) => (
           <Link
             key={section.title}
@@ -61,19 +57,16 @@ const Page = () => {
           >
             <Card className="h-full flex flex-col">
               <CardHeader className="flex flex-row items-center gap-4">
-                <DynamicIcon
-                  name={section.icon as any}
-                  className="w-8 h-8 text-olive-700"
-                />
+                <section.Icon className="w-8 h-8 text-olive-700" />
                 <CardTitle className="text-olive-700">
                   {section.title}
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              {/* <CardContent>
                 <CardDescription className="text-olive-700">
                   {section.description}
                 </CardDescription>
-              </CardContent>
+              </CardContent> */}
             </Card>
           </Link>
         ))}

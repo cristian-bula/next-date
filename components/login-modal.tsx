@@ -15,12 +15,14 @@ import {
   useDisclosure,
 } from "@heroui/modal";
 import { revalidateClientPath } from "@/lib/actions";
+import { useRouter } from "next/navigation";
 
 export function LoginModal() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { setUser } = useStore();
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,6 +44,7 @@ export function LoginModal() {
       setUser(data.user);
       toast.success("¡Login exitoso!");
       revalidateClientPath("/dates");
+      router.push("/");
       onOpenChange();
     } catch (error) {
       toast.error("Error al iniciar sesión.");
