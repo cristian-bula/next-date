@@ -61,7 +61,7 @@ const PastDates = ({ pastDates }: { pastDates: DateEvent[] }) => {
       });
 
       if (!res.ok) throw new Error("Error al enviar la reseña");
-      revalidateClientPath("/");
+      revalidateClientPath("/dates");
       const data = await res.json();
       const newReview = data as IReview;
       selectedDate?.reviews?.push(newReview);
@@ -80,7 +80,7 @@ const PastDates = ({ pastDates }: { pastDates: DateEvent[] }) => {
     try {
       const res = await fetch(`/api/reviews/${reviewId}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Error al eliminar la reseña");
-      revalidateClientPath("/");
+      revalidateClientPath("/dates");
 
       const updatedReviews = selectedDate?.reviews?.filter(
         (r) => r.id !== reviewId

@@ -22,7 +22,7 @@ export const onAddDate = async (e: Omit<DateEvent, "id">) => {
     if (!response?.id) {
       throw new Error();
     }
-    revalidateClientPath("/");
+    revalidateClientPath("/dates");
     toast.success("Date creado con exito 🌚");
     return response;
   } catch (e) {

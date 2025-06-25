@@ -48,13 +48,14 @@ export async function POST(request: Request) {
         const response = await webpush.sendNotification(
           JSON.parse(sub.subscription),
           JSON.stringify({
-            title: "Se agregó una nueva fecha 🥰!",
-            body: `Se ha agregado una nueva fecha: ${
-              body.description
-            } para el ${body.date} por ${user?.name || "alguien"} 🎉`,
+            title: "Se agregó una nueva cita 🥰!",
+            body: `Se ha agregado una nueva cita: ${body.description} ${
+              body?.date
+                ? ""
+                : "para el  " + body?.date?.toISOString()?.split("T")[0]
+            } por ${user?.name || "alguien"} 🎉`,
           })
         );
-        console.log(response);
       } catch (error) {
         console.error("Error sending notification to subscription:", error);
       }

@@ -41,7 +41,7 @@ export function LoginModal() {
       const data = await response.json();
       setUser(data.user);
       toast.success("¡Login exitoso!");
-      revalidateClientPath("/");
+      revalidateClientPath("/dates");
       onOpenChange();
     } catch (error) {
       toast.error("Error al iniciar sesión.");

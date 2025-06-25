@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Next Date",
-    short_name: "Next Date",
-    description: "Contador para nuestra próxima cita romántica",
+    name: "Just the two of us",
+    short_name: "Just the two of us",
+    description: "Bitacora de citas, tareas, cine, chats y más",
     start_url: "/",
     display: "standalone",
     background_color: "#b0c29a",

@@ -38,6 +38,9 @@ model users {
   role      String
   reviews   reviews[]        @relation("UserReviews")
   tokens    tokenWhiteList[] @relation("UserTokens")
+  todos     todo[]           @relation("UserTodos")
+  movies    movieReviews[]   @relation("UserMovieReviews")
+  conversations conversation[] @relation("UserConversations")
   // subscriptions subscription[] @relation("UserSubscriptions")
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
@@ -71,4 +74,47 @@ model subscription {
   // user        users    @relation("UserSubscriptions", fields: [userId], references: [id])
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}
+
+model todo {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  text      String
+  completed Boolean  @default(false)
+  userId    String   @db.ObjectId
+  user      users    @relation("UserTodos", fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model movies {
+  id          String         @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String?
+  imageUrl    String?
+  watchedBy   movieReviews[] @relation("MovieReviews")
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+model movieReviews {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  rating    Int
+  comment   String?
+  userId    String   @db.ObjectId
+  movieId   String   @db.ObjectId
+  user      users    @relation("UserMovieReviews", fields: [userId], references: [id])
+  movie     movies   @relation("MovieReviews", fields: [movieId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model conversation {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  text       String
+  personName String
+  date       DateTime
+  userId     String   @db.ObjectId
+  user       users    @relation("UserConversations", fields: [userId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }

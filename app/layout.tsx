@@ -4,8 +4,8 @@ import type { Metadata } from "next";
 import Providers from "./providers";
 
 export const metadata: Metadata = {
-  title: "Nuestra Próxima Cita",
-  description: "Contador para nuestra próxima cita romántica",
+  title: "Just the two of us",
+  description: "Bitacora de citas, tareas, cine, chats y más",
 };
 
 export default function RootLayout({
@@ -15,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body>
+      <body className="min-h-screen items-center justify-center bg-gradient-to-br from-olive-100 to-olive-200 w-full">
         <Providers>{children}</Providers>
       </body>
     </html>

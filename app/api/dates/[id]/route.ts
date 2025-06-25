@@ -59,7 +59,6 @@ export async function PATCH(
             body: `Se ha actualizado la cita ${body.description} 📅`,
           })
         );
-        console.log(response);
       } catch (error) {
         console.error("Error sending notification to subscription:", error);
       }

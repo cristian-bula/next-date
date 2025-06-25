@@ -37,7 +37,7 @@ const onDeleteDate = async (id: string) => {
     if (!response) {
       return;
     }
-    revalidateClientPath("/");
+    revalidateClientPath("/dates");
     toast.success("Date eliminado 💔");
   } catch (error) {
     toast.error("Ups, te fallé Andrea, sorry ❤️");
@@ -54,7 +54,7 @@ const onEditDate = async (id: string, updatedDate: Partial<DateEvent>) => {
     if (!response) {
       return;
     }
-    revalidateClientPath("/");
+    revalidateClientPath("/dates");
     toast.success("Date actualizado con exito 🌚");
   } catch (error) {
     toast.error("Ups, te fallé Andrea, sorry ❤️");

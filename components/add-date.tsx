@@ -57,7 +57,7 @@ export function AddDateModal() {
     if (!response) {
       return;
     }
-    revalidateClientPath("/");
+    revalidateClientPath("/dates");
 
     setDate(null);
     setDescription("");
