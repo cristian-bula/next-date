@@ -1,12 +1,12 @@
 import { Heart } from "lucide-react";
 import { DateEvent } from "@/types/date";
 import { AddDateModal } from "./add-date";
-import { ManageDatesModal } from "./manage-dates";
 import { LoginModal } from "./login-modal";
-import { SignupModal } from "./signup-modal";
 import PastDates from "./past-dates";
 import NextDate from "./next-date";
 import BackButton from "./back-button";
+import { Button } from "./ui/button";
+import Link from "next/link";
 
 type CountdownProps = {
   pastDates: DateEvent[];
@@ -30,7 +30,7 @@ export default function MainComponet({
   return (
     <>
       <BackButton href="/" />
-      <div className="max-w-2xl w-full p-4">
+      <div className="max-w-2xl w-full p-4 mx-auto">
         <header className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold text-olive-700 mb-2 flex justify-center items-center gap-3">
             <Heart className="text-white fill-white" />
@@ -48,7 +48,12 @@ export default function MainComponet({
 
         <div className="flex justify-center gap-4">
           <AddDateModal />
-          <ManageDatesModal dates={allDates} />
+          <Link href="/dates/all-dates">
+            <Button className="bg-olive-600 hover:bg-olive-700 text-white">
+              Gestionar Citas
+            </Button>
+          </Link>
+          {/* <ManageDatesModal dates={allDates} /> */}
         </div>
 
         <div className="flex justify-center mt-2 gap-4">

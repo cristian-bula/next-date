@@ -13,12 +13,8 @@ import { PhotoProvider, PhotoView } from "react-photo-view";
 import toast from "react-hot-toast";
 import { Modal, ModalBody, ModalContent, useDisclosure } from "@heroui/modal";
 import { IUser } from "@/types/user";
+import { getAverageRating } from "@/lib/utils";
 
-const getAverageRating = (reviews: IReview[]) => {
-  if (!reviews?.length) return 0;
-  const total = reviews?.reduce((sum, r) => sum + r.rating, 0);
-  return (total / reviews?.length).toFixed(1);
-};
 
 const PastDates = ({ pastDates }: { pastDates: DateEvent[] }) => {
   const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({

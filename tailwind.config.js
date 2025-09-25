@@ -7,7 +7,7 @@ module.exports = {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
     "*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@heroui/theme/dist/components/modal.js"
+    "./node_modules/@heroui/theme/dist/components/(modal|tabs).js"
   ],
   theme: {
     container: {

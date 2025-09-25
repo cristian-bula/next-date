@@ -50,19 +50,19 @@ export async function PATCH(
 
     const subscriptions = await prisma.subscription.findMany();
 
-    for (const sub of subscriptions) {
-      try {
-        const response = await webpush.sendNotification(
-          JSON.parse(sub.subscription),
-          JSON.stringify({
-            title: "Se ha actualizado una cita 👀!",
-            body: `Se ha actualizado la cita ${body.description} 📅`,
-          })
-        );
-      } catch (error) {
-        console.error("Error sending notification to subscription:", error);
-      }
-    }
+    // for (const sub of subscriptions) {
+    //   try {
+    //     const response = await webpush.sendNotification(
+    //       JSON.parse(sub.subscription),
+    //       JSON.stringify({
+    //         title: "Se ha actualizado una cita 👀!",
+    //         body: `Se ha actualizado la cita ${body.description} 📅`,
+    //       })
+    //     );
+    //   } catch (error) {
+    //     console.error("Error sending notification to subscription:", error);
+    //   }
+    // }
 
     return NextResponse.json(updatedDate);
   } catch (error) {

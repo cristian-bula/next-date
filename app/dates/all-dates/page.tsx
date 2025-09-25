@@ -1,23 +1,21 @@
-import { Suspense } from "react";
-import { getAllDates } from "@/lib/data";
-import MainComponet from "@/components/main-component";
+import AllDatesComponent from "@/components/all-dates-component";
+import BackButton from "@/components/back-button";
 import { LoginModal } from "@/components/login-modal";
 import { SignupModal } from "@/components/signup-modal";
-import BackButton from "@/components/back-button";
+import { getAllDates } from "@/lib/data";
 import { PageInterface } from "@/types/date";
+import React, { Suspense } from "react";
 
-export default async function DatesPage({ searchParams }: PageInterface) {
+const AllDatesPage = async ({ searchParams }: PageInterface) => {
   try {
     const params = searchParams;
 
     const allDates = await getAllDates({
-      page: Number(params.page || 1),
-      limit: Number(params.limit || 1000),
+      page: 1,
+      limit: 10,
       withDate: true,
     });
-    const pastDates = allDates?.data
-      ?.filter((date) => (date?.date || new Date()) < new Date())
-      ?.sort((a, b) => (b.date?.getTime() || 0) - (a.date?.getTime() || 0));
+
     return (
       <Suspense
         fallback={
@@ -28,10 +26,7 @@ export default async function DatesPage({ searchParams }: PageInterface) {
           </div>
         }
       >
-        <MainComponet
-          pastDates={pastDates || []}
-          allDates={allDates?.data || []}
-        />
+        <AllDatesComponent dates={allDates} />
       </Suspense>
     );
   } catch (error) {
@@ -52,4 +47,6 @@ export default async function DatesPage({ searchParams }: PageInterface) {
       </>
     );
   }
-}
+};
+
+export default AllDatesPage;

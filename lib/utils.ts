@@ -5,6 +5,7 @@ import { addDate, uploadImage } from "./data";
 import toast from "react-hot-toast";
 import Cryptr from "cryptr";
 import { revalidateClientPath } from "./actions";
+import { IReview } from "@/types/reviews";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -44,4 +45,10 @@ export const comparePassword = function (
 ) {
   const cryptr = new Cryptr(process.env.NEXT_SECRET_KEY || "secret_key");
   return cryptr.decrypt(encryptedPassword) === password;
+};
+
+export const getAverageRating = (reviews: IReview[]) => {
+  if (!reviews?.length) return 0;
+  const total = reviews?.reduce((sum, r) => sum + r.rating, 0);
+  return (total / reviews?.length).toFixed(1);
 };

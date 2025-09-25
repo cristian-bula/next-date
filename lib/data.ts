@@ -1,31 +1,55 @@
-import { DateEvent } from "@/types/date";
+import { DateEvent, DateEventPagination } from "@/types/date";
 import { ITodo } from "@/types/todo";
+import toast from "react-hot-toast";
+import { revalidateClientPath } from "./actions";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/";
 const CLOUD_NAME = process.env.NEXT_PUBLIC_CLAUDINARY_NAME || "";
 const UPLOAD_PRESET = "VERCEL";
 
-export const getAllDates = async (): Promise<DateEvent[]> => {
+export const getAllDates = async ({
+  page = 1,
+  limit = 100,
+  withDate = false,
+}: {
+  page?: number;
+  limit?: number;
+  withDate?: boolean;
+}): Promise<DateEventPagination> => {
   try {
-    const res = await fetch(`${API_URL}dates`, {
-      next: {
-        revalidate: 300,
-      },
-      method: "GET",
-    });
+    const res = await fetch(
+      `${API_URL}dates?page=${page}&limit=${limit}&withDate=${withDate}`,
+      {
+        next: {
+          revalidate: 300,
+        },
+        method: "GET",
+      }
+    );
     if (!res.ok) {
       throw new Error(`Error: ${res.status}`);
     }
-
     const data = await res.json();
-    if (!data.length) throw new Error(`Error: ${res.status}`);
-    return data.map((item: any) => ({
-      ...item,
-      date: item.date ? new Date(item.date) : null,
-    }));
+    if (!data?.data?.length) throw new Error(`Error: ${res.status}`);
+    const dates = data?.data;
+    return {
+      data: dates?.map((item: any) => ({
+        ...item,
+        date: item.date ? new Date(item.date) : null,
+      })),
+      pagination: data?.pagination,
+    };
   } catch (error) {
     console.error("Error al obtener citas", error);
-    return [];
+    return {
+      data: [],
+      pagination: {
+        total: 0,
+        page: 1,
+        limit: 10,
+        totalPages: 0,
+      },
+    };
   }
 };
 
@@ -213,5 +237,35 @@ export const deleteTodo = async (todoId: string): Promise<boolean> => {
   } catch (error) {
     console.error(`Error al eliminar todo ${todoId}`, error);
     return false;
+  }
+};
+
+export const onDeleteDate = async (id: string) => {
+  const createMsg = toast.loading("Cargando...");
+  try {
+    const response = await deleteDate(id);
+    if (!response) return;
+    revalidateClientPath("/dates/all-dates");
+    revalidateClientPath("/dates");
+    toast.success("Date eliminado 💔");
+  } catch (error) {
+    toast.error("Ups, te fallé Andrea, sorry ❤️");
+    console.error(error);
+  } finally {
+    toast.dismiss(createMsg);
+  }
+};
+
+export const onEditDate = async (
+  id: string,
+  updatedDate: Partial<DateEvent>
+) => {
+  try {
+    const response = await updateDate(id, updatedDate);
+    if (!response) return;
+    revalidateClientPath("/dates/all-dates");
+    revalidateClientPath("/dates");
+  } catch (error) {
+    console.error(error);
   }
 };

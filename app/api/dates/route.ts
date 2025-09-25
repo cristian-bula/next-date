@@ -1,6 +1,6 @@
 import { validateToken } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import webpush from "web-push";
 
 // Initialize web-push with your VAPID keys
@@ -81,15 +81,52 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     // await validateToken();
-    const allDates = await prisma.dates.findMany({
-      orderBy: { date: "desc" },
-      include: { reviews: { include: { user: true } } },
-    });
+    const searchParams = request?.nextUrl?.searchParams;
 
-    return NextResponse.json(allDates);
+    const order = (searchParams?.get("order") as "asc" | "desc") || "desc";
+    const page = parseInt(searchParams?.get("page") || "1", 10);
+    const limit = parseInt(searchParams?.get("limit") || "10", 10);
+    const withDate = searchParams?.get("withDate") === "true";
+
+    const skip = (page - 1) * limit;
+    const where: any = {};
+    let orderBy: any = {};
+
+    if (searchParams?.has("withDate")) {
+      if (withDate) {
+        orderBy = { date: order };
+        where.date = { not: null }; // con fecha
+      } else {
+        orderBy = { id: order };
+        where.date = null; // sin fecha
+      }
+    }
+
+    const [allDates, total] = await Promise.all([
+      prisma.dates.findMany({
+        orderBy,
+        where,
+        take: limit,
+        skip,
+        include: { reviews: { include: { user: true } } },
+      }),
+      prisma.dates.count({
+        where,
+      }),
+    ]);
+
+    return NextResponse.json({
+      data: allDates,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    });
   } catch (error) {
     console.error("Error fetching all dates:", error);
     return NextResponse.json(
