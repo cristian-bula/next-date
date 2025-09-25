@@ -75,7 +75,7 @@ const AllDatesComponent = ({ dates }: { dates: DateEventPagination }) => {
     try {
       const nextPage = paginationWithoutDate.page + 1;
       const res = await fetch(
-        `/api/dates?page=${nextPage}&limit=5&withDate=false`
+        `/api/dates?page=${nextPage}&limit=10&withDate=false`
       );
       const newData: DateEventPagination = await res.json();
       setWithoutDate((prev) => [...prev, ...newData.data]);
