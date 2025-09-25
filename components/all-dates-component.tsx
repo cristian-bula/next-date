@@ -115,7 +115,7 @@ const AllDatesComponent = ({ dates }: { dates: DateEventPagination }) => {
         const currentId = currentList[editingIndex].id;
 
         const newPhoto = file ? [(await uploadImage(file)) || ""] : [];
-        let finalPhotos = replaceMode
+        const finalPhotos = replaceMode
           ? newPhoto
           : [...newPhoto, ...editState.photo];
 
@@ -161,7 +161,7 @@ const AllDatesComponent = ({ dates }: { dates: DateEventPagination }) => {
       } finally {
         toast.dismiss(createMsg);
       }
-    }else{
+    } else {
       toast.error("Recuerda completar todos los campos <3");
     }
   };
