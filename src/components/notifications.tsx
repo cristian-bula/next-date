@@ -40,7 +40,7 @@ export function Notifications() {
           }
         }
       } catch (error) {
-        console.error("Error registering service worker:", error);
+        // console.error("Error registering service worker:", error);
       }
     };
 

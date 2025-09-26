@@ -61,7 +61,7 @@ const AllDatesCard = ({
         <div className="flex justify-end gap-2 pt-2 -mt-12">
           <button
             onClick={() => handleEdit(index, from)}
-            className="p-2 rounded-full bg-primary/20 hover:bg-primary/80 transition"
+            className="p-2 rounded-full bg-olive-100 hover:bg-olive-200 transition"
           >
             <Edit size={18} className="text-primary" />
           </button>
