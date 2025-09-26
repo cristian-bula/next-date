@@ -44,6 +44,7 @@ export async function GET(req: Request) {
   }
 
   const randomMessage = getRandomMessage();
+  let sent = 0;
 
   try {
     const subscriptions = await prisma.subscription.findMany();
@@ -57,6 +58,7 @@ export async function GET(req: Request) {
             body: randomMessage,
           })
         );
+        sent++;
       } catch (error) {
         console.error("Error sending notification to subscription:", error);
       }
@@ -65,5 +67,5 @@ export async function GET(req: Request) {
     console.error("Error fetching subscriptions:", err);
   }
 
-  return NextResponse.json({ ok: true, sent: randomMessage });
+  return NextResponse.json({ ok: true, sent: randomMessage, number: sent });
 }
