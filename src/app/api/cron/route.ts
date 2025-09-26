@@ -31,6 +31,16 @@ const messages = [
   "Te extraño mucho, no se cuando te llegue esto, pero estoy seguro que te extraño ❤️",
   "Quiero verte (ojalá lo esté haciendo ahora mismo) 🫶🏻",
 ];
+const vapidKeys = {
+  publicKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "",
+  privateKey: process.env.VAPID_PRIVATE_KEY || "",
+};
+
+webpush.setVapidDetails(
+  "mailto:cristianbula5656@gmail.com",
+  vapidKeys.publicKey,
+  vapidKeys.privateKey
+);
 
 function getRandomMessage() {
   return messages[Math.floor(Math.random() * messages.length)];
