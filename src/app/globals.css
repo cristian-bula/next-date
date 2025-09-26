@@ -1,0 +1,158 @@
+@import "tailwindcss";
+@plugin '../hero.ts';
+@source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+
+/* === VARIABLES DE COLOR === */
+:root {
+  --background: #e4ead2;
+  --foreground: #0f172a;
+
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+
+  --primary: #6d9942;
+  --primary-foreground: #f8fafc;
+
+  --secondary: #f1f5f9;
+  --secondary-foreground: #18181b;
+
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+
+  --accent: #f1f5f9;
+  --accent-foreground: #18181b;
+
+  --destructive: #e54848;
+  --destructive-foreground: #f8fafc;
+
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #6d9942;
+
+  --radius: 0.5rem;
+
+
+  --olive-50:  #f9faf5;
+  --olive-100: #f1f4e7;
+  --olive-200: #e0e7cc;
+  --olive-300: #c7d3a8;
+  --olive-400: #aabb7f;
+  --olive-500: #92a35e;
+  --olive-600: #75844a;
+  --olive-700: #5d6a3c;
+  --olive-800: #4c5632;
+  --olive-900: #40482b;
+  --olive-950: #21250f;
+
+}
+
+/* === BASE GLOBAL === */
+* {
+  border-color: var(--border);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* === CONTAINER === */
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  max-width: 100%;
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1400px;
+  }
+}
+
+/* === BORDER RADIUS === */
+.rounded-lg { border-radius: var(--radius); }
+.rounded-md { border-radius: calc(var(--radius) - 2px); }
+.rounded-sm { border-radius: calc(var(--radius) - 4px); }
+
+/* === ANIMACIONES === */
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+
+.animate-accordion-down {
+  animation: accordion-down 0.2s ease-out;
+}
+
+.animate-accordion-up {
+  animation: accordion-up 0.2s ease-out;
+}
+
+/* === COLORS UTILITY === */
+.bg-background { background-color: var(--background); }
+.text-foreground { color: var(--foreground); }
+
+.bg-card { background-color: var(--card); }
+.text-card { color: var(--card); }
+
+.bg-popover { background-color: var(--popover); }
+.text-popover { color: var(--popover); }
+
+.bg-primary { background-color: var(--primary); }
+.text-primary { color: var(--primary); }
+
+.bg-secondary { background-color: var(--secondary); }
+.text-secondary { color: var(--secondary); }
+
+.bg-muted { background-color: var(--muted); }
+.text-muted { color: var(--muted); }
+
+.bg-accent { background-color: var(--accent); }
+.text-accent { color: var(--accent); }
+
+.bg-destructive { background-color: var(--destructive); }
+.text-destructive { color: var(--destructive); }
+
+/* === OLIVE COLORS === */
+.bg-olive-50 { background-color: #f9faf5; }
+.bg-olive-100 { background-color: #f1f4e7; }
+.bg-olive-200 { background-color: #e0e7cc; }
+.bg-olive-300 { background-color: #c7d3a8; }
+.bg-olive-400 { background-color: #aabb7f; }
+.bg-olive-500 { background-color: #92a35e; }
+.bg-olive-600 { background-color: #75844a; }
+.bg-olive-700 { background-color: #5d6a3c; }
+.bg-olive-800 { background-color: #4c5632; }
+.bg-olive-900 { background-color: #40482b; }
+.bg-olive-950 { background-color: #21250f; }
+
+@theme inline {
+  --color-olive-50: var(--olive-50);
+  --color-olive-100: var(--olive-100);
+  --color-olive-200: var(--olive-200);
+  --color-olive-300: var(--olive-300);
+  --color-olive-400: var(--olive-400);
+  --color-olive-500: var(--olive-500);
+  --color-olive-600: var(--olive-600);
+  --color-olive-700: var(--olive-700);
+  --color-olive-800: var(--olive-800);
+  --color-olive-900: var(--olive-900);
+  --color-olive-950: var(--olive-950);
+}
+
+/* === MODALES PHOTO VIEW === */
+.PhotoView-Slider__Backdrop {
+  pointer-events: none !important;
+  z-index: 9999 !important;
+}
