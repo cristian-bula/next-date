@@ -24,6 +24,6 @@ export const config = {
      * - /favicon.ico
      * - /api/*
      */
-    "/((?!login|_next|favicon.ico|api).*)"
+    "/((?!login|_next|favicon.ico|api|manifest|robots).*)"
   ],
 };
